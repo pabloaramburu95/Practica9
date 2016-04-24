@@ -12,7 +12,7 @@ exports.check = function (req,res,next){
 };
 
 //GET /author
-exports.check = function (req,res,next){
+exports.author = function (req,res,next){
 	res.render ('author');
 };
 
