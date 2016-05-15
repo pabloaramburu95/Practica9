@@ -8,16 +8,16 @@ exports.index = function(req, res) {
         	models.Quiz.findAll({
 			where: ["question like ?", '%'+req.query.search+'%']
 			,order:'question ASC'
-         	})
-	    		.then(function(quizzes){
+         	}
+	    ).then(function(quizzes){
 				if(typeof(quizzes != 'undefined')){
-					res.render('quizzes/index.ejs', { quizzes: quizzes});
+					res.render('quizzes/index', { quizzes: quizzes});
 				}
 			}).catch(function(error) { next(error);})
 	}else{
 		models.Quiz.findAll().then(
 			function(quizzes) {
-				res.render('quizzes/index.ejs', { quizzes: quizzes});
+				res.render('quizzes/index', { quizzes: quizzes});
 			}
 		).catch(function(error) { next(error);})
 	}
@@ -66,6 +66,6 @@ exports.check = function(req, res) {
 
 
 //GET /author
-exports.check = function (req,res,next){
+exports.author = function (req,res,next){
 	res.render ('author');
 };
