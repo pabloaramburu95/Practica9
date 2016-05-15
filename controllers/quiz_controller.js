@@ -11,6 +11,11 @@ exports.load = function(req,res,next,quizId){
 		}
 	}).catch(function(error) {next(error);});
 };
+// GET /quizzes/new
+exports.new = function(req,res,next){
+        var quiz = models.Quiz.build({question:"",answer:""});
+        res.render ('quizzes/new', {quiz:quiz});
+};
 
 
 // POST /quizzes/create
@@ -28,11 +33,6 @@ exports.create = function (req,res,next){
 };
 
 
-// GET /quizzes/new
-exports.new = function(req,res,next){
-	var quiz = models.Quiz.build({question:"",answer:""});
-	res.render ('quizzes/new', {quiz:quiz});
-};
 // GET /quizzes
 exports.index = function(req, res) {
 	console.log('Parametro: ' + req.query.search);
@@ -62,9 +62,7 @@ exports.show = function(req, res, next) {
 		.then(function(quiz) {
 			if (quiz) {
 				var answer = req.query.answer || '';
-
-				res.render('quizzes/show', {quiz:req.quiz,
-											answer: answer});
+				res.render('quizzes/show', {quiz:req.quiz, answer: answer});
 			} else {
 		    	throw new Error('No existe ese quiz en la BBDD.');
 		    }
@@ -81,19 +79,15 @@ exports.check = function(req, res) {
 		.then(function(quiz) {
 			if (quiz) {
 				var answer = req.query.answer || "";
-
 				var result = answer === req.quiz.answer ? 'Correcta' : 'Incorrecta';
-
-				res.render('quizzes/result', { quiz: req.quiz, 
-											   result: result, 
-											   answer: answer });
+				res.render('quizzes/result', { quiz: req.quiz, result: result, answer: answer });
 			} else {
 				throw new Error('No existe ese quiz en la BBDD.');
 			}
 		})
 		.catch(function(error) {
 			next(error);
-		});	
+		});
 };
 
 
