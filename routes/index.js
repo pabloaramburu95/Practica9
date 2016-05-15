@@ -11,11 +11,8 @@ router.get('/', function(req, res, next) {
 router.get('/quizzes',quizController.index);
 router.get('/quizzes/:quizId(\\d+)', quizController.show);
 router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
+router.get('/author', quizController.author); 
 
 module.exports = router;
-router.get('/author', quizController.author); 
-// Ruta autor
-router.get('/author', function(req,res,next){
-	res.render('author');
-});
+
 
