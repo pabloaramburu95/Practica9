@@ -1,12 +1,14 @@
-var session = require('express-session');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var partials = require('express-partials');
-var flash = require ('express-flash');
+var flash = require('express-flash');
+var methodOverride = require('method-override');
+
 var routes = require('./routes/index');
 
 var app = express();
@@ -22,11 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({secret: "Quiz 2016",
-		resave: false,
-		saveUninitialized: true}));
+                 resave: false,
+                 saveUninitialized: true}));
+app.use(methodOverride('_method', {methods: ["POST", "GET"]}));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(partials());
 app.use(flash());
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler

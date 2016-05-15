@@ -5,7 +5,10 @@
         <td>
            <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
         </td>
-     </tr> 
+        <td>
+           <a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a>
+        </td>    
+	</tr> 
   <% } %>
 </table>
 
