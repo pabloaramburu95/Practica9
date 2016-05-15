@@ -65,7 +65,7 @@ exports.check = function(req, res) {
 };
 
 
-//GET /author
-exports.check = function (req,res,next){
-	res.render ('author');
+// GET /author
+exports.author = function (req,res,next){
+	res.render('author', {autor: 'Pablo Aramburu García'});
 };
