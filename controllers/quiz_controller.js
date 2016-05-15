@@ -118,6 +118,19 @@ exports.update = function(req, res, next) {
 };
 
 
+//DELETE /quizzes/:id
+exports.destroy = function(req,res,next){
+	req.quiz.destroy()
+	.then(function(){
+	  req.flash('success', 'Quiz borrado ok');
+	  res.redirect('/quizzes');
+	})
+	.catch(function(error){
+	  req.flahs('error', 'Error al editar el Quiz: '+ error.message);
+	  next(error);
+	});
+};
+
 
 //GET /author
 exports.author = function (req,res,next){
