@@ -28,5 +28,12 @@ var sequelize = new Sequelize(url,
 // Importar la definicion de la tabla Quiz de quiz.js
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
+//Importar la definicion de tabla Comments
+var Comment = sequelize.import(path.join(__dirname,'comment'));
+
+//Relaciones entre modelos
+Comment.belongsTo(Quiz); //un comentario pertenece a quiz
+Quiz.hasMany(Comment); //un quiz puede tener varios comentarios
 
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
+exports.Comment = Comment; //exportar definicion de tabla Comment
