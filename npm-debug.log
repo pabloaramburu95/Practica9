@@ -1,0 +1,26 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run-script', 'seed_local' ]
+2 info using npm@1.4.21
+3 info using node@v0.10.25
+4 verbose run-script [ 'preseed_local', 'seed_local', 'postseed_local' ]
+5 info preseed_local quiz@0.0.0
+6 info seed_local quiz@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info quiz@0.0.0 Failed to exec seed_local script
+9 error quiz@0.0.0 seed_local: `sequelize db:seed:all --url sqlite://$(pwd)/quiz.sqlite`
+9 error Exit status 1
+10 error Failed at the quiz@0.0.0 seed_local script.
+10 error This is most likely a problem with the quiz package,
+10 error not with npm itself.
+10 error Tell the author that this fails on your system:
+10 error     sequelize db:seed:all --url sqlite://$(pwd)/quiz.sqlite
+10 error You can get their info via:
+10 error     npm owner ls quiz
+10 error There is likely additional logging output above.
+11 error System Linux 4.2.0-16-generic
+12 error command "/usr/bin/nodejs" "/usr/bin/npm" "run-script" "seed_local"
+13 error cwd /home/pablo/proyectos_express/quiz
+14 error node -v v0.10.25
+15 error npm -v 1.4.21
+16 error code ELIFECYCLE
+17 verbose exit [ 1, true ]

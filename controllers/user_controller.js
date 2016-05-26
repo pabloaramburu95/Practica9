@@ -62,6 +62,7 @@ exports.create = function(req, res, next) {
                     .then(function(user) { // Renderizar pagina de usuarios
                         req.flash('success', 'Usuario creado con éxito.');
                         res.redirect('/users');
+			res.redirect('/session');
                     })
                     .catch(Sequelize.ValidationError, function(error) {
                         req.flash('error', 'Errores en el formulario:');
@@ -120,8 +121,12 @@ exports.update = function(req, res, next) {
 exports.destroy = function(req, res, next) {
     req.user.destroy()
         .then(function() {
-            req.flash('success', 'Usuario eliminado con éxito.');
-            res.redirect('/users');
+		if (req.session.user && req.session.user.id === req.user.id){
+			delete req.session.user;
+ 		}
+
+	    req.flash('success', 'Usuario eliminado con éxito.');
+            res.redirect('/');
         })
         .catch(function(error){ 
             next(error); 
