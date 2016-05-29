@@ -45,7 +45,7 @@ app.use(function(req, res, next) {
   if(req.session.user){// si existe usuario
 //establecido la fecha del logout, comparo para ver si se sobrepasa
     //Fecha actual - fecha de ingreso < tiempoLogout
-    if((Date.now() -  req.session.user.ingreso) < 1000){
+    if((Date.now() -  req.session.user.ingreso) < 120000){
       req.session.user.ingreso = Date.now();
     } else {
       delete req.session.user;
