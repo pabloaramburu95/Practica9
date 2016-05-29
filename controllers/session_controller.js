@@ -1,7 +1,7 @@
 var models = require('../models');
 var Sequelize = require('sequelize');
 var url = require('url');
-
+//var tiempoLimite = 60000; //2 minutos en mili segundos
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
  *
@@ -51,7 +51,8 @@ exports.create = function(req, res, next) {
             if (user) {
     	        // Crear req.session.user y guardar campos id y username
     	        // La sesión se define por la existencia de: req.session.user
-    	        req.session.user = {id:user.id, username:user.username};
+	//	var logoutt = Date.now() + tiempoLimite;
+		req.session.user = {id:user.id, username:user.username, ingreso:Date.now()};
 
                 res.redirect(redir); // redirección a redir
             } else {
@@ -64,6 +65,21 @@ exports.create = function(req, res, next) {
             next(error);        
     });
 };
+
+//AUTOLOGOUT -- P12, si pasan 2 minutos el usuario es desconectado
+//exports.autologout = function (req,res,next){
+//	if (req.session){
+//		if (req.session.user.logoutt < Date.now()){
+//			delete req.session.user; //borra al usuario
+//			 res.redirect ("/session");
+//		}else{
+//			req.session.user.logoutt === Date.now() + tiempoLimite; //actualiza el tiempo logout del usuario
+//		}
+//	}
+//	next();
+
+
+//};
 
 
 // DELETE /session   -- Destruir sesion 

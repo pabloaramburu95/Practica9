@@ -10,7 +10,6 @@ var flash = require('express-flash');
 var methodOverride = require('method-override');
 
 var routes = require('./routes/index');
-
 var app = express();
 
 // view engine setup
@@ -39,6 +38,23 @@ app.use(function(req, res, next) {
    res.locals.session = req.session;
 
    next();
+});
+
+// Practica12: Autologout en caso de sobrepasar 2 minutos
+app.use(function(req, res, next) {
+  if(req.session.user){// si existe usuario
+//establecido la fecha del logout, comparo para ver si se sobrepasa
+    //Fecha actual - fecha de ingreso < tiempoLogout
+    if((Date.now() -  req.session.user.ingreso) < 1000){
+      req.session.user.ingreso = Date.now();
+    } else {
+      delete req.session.user;
+      req.flash('error','Ha expirado la cuenta');
+      res.redirect("/session"); //para poder relogearse
+    }
+  }
+
+  next();
 });
 
 app.use('/', routes);
