@@ -144,3 +144,16 @@ exports.destroy = function(req,res,next){
 exports.author = function (req,res,next){
 	res.render ('author');
 };
+
+//ownershipRequired
+exports.ownershipRequired = function (req, res, next) {
+	var isAdmin = req.session.user.isAdmin;
+	var quizzAuthorId = req.quiz.AuthorId;
+	var loggedUserId = req.session.user.id;
+	if (isAdmin || quizzAuthorId === loggedUserId){
+		next();
+	}else{
+		console.log('Operacion prohibida: El usuario logeado no es el autor');
+		res.send(403);
+	}
+};

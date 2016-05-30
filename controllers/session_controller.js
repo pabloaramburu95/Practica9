@@ -10,7 +10,6 @@ var url = require('url');
  * Si la autenticacion falla, la promesa se satisface pero devuelve null.
  */
 var authenticate = function(login, password) {
-    
     return models.User.findOne({where: {username: login}})
         .then(function(user) {
             if (user && user.verifyPassword(password)) {
@@ -58,8 +57,7 @@ exports.create = function(req, res, next) {
             if (user) {
     	        // Crear req.session.user y guardar campos id y username
     	        // La sesión se define por la existencia de: req.session.user
-	//	var logoutt = Date.now() + tiempoLimite;
-		req.session.user = {id:user.id, username:user.username, ingreso:Date.now()};
+		req.session.user = {id:user.id, username:user.username,isAdmin: user.isAdmin, ingreso:Date.now()};
 
                 res.redirect(redir); // redirección a redir
             } else {
@@ -69,30 +67,60 @@ exports.create = function(req, res, next) {
 		})
 		.catch(function(error) {
             req.flash('error', 'Se ha producido un error: ' + error);
-            next(error);        
+            next(error);
     });
 };
 
-//AUTOLOGOUT -- P12, si pasan 2 minutos el usuario es desconectado
-//exports.autologout = function (req,res,next){
-//	if (req.session){
-//		if (req.session.user.logoutt < Date.now()){
-//			delete req.session.user; //borra al usuario
-//			 res.redirect ("/session");
-//		}else{
-//			req.session.user.logoutt === Date.now() + tiempoLimite; //actualiza el tiempo logout del usuario
-//		}
-//	}
-//	next();
 
-
-//};
-
-
-// DELETE /session   -- Destruir sesion 
+// DELETE /session   -- Destruir sesion
 exports.destroy = function(req, res, next) {
 
     delete req.session.user;
-    
+
     res.redirect("/session"); // redirect a login
 };
+
+// MW que permite gestionar solamente si el usuario logeado es admin.
+exports.adminRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+
+    if (isAdmin) {
+        next();
+    } else {
+      console.log('Ruta prohibida: el usuario logeado no es administrador.');
+      res.send(403);    }
+};
+
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin 
+//   - o es el usuario a gestionar.
+exports.adminOrMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin || userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
+// MW que permite gestionar un usuario solamente si el usuario logeado es:
+//   - admin
+//   - y no es el usuario a gestionar.
+exports.adminAndNotMyselfRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+    var userId       = req.user.id;
+    var loggedUserId = req.session.user.id;
+
+    if (isAdmin && userId === loggedUserId) {
+        next();
+    } else {
+      console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+      res.send(403);    }
+};
+
