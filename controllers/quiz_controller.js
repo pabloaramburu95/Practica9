@@ -2,6 +2,7 @@ var Sequelize = require('sequelize');
 var models = require('../models');
 var cloudinary = require('cloudinary');
 var fs = require('fs');
+var Promise = require('promise');
 
 //Opciones para imagenes de Cloudinary
 var cloudinary_image_options = {crop:'limit', width: 200, height: 200, radius: 5, border:"3px_solid_blue", tags: ['core', 'quiz-2016']};
@@ -71,9 +72,9 @@ exports.new = function(req, res, next) {
 // POST /quizzes/create
 exports.create = function(req, res, next) {
    var authorId = req.session.user && req.session.user.id || 0;
-   var quiz = models.Quiz.build({ question: req.body.quiz.question, 
+   var quiz = { question: req.body.quiz.question, 
   	                             answer:   req.body.quiz.answer,
-				AuthorId: authorId} );
+				AuthorId: authorId};
 
 // Guarda en la tabla Quizzes el nuevo quiz.
     models.Quiz.create(quiz)
