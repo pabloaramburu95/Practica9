@@ -28,6 +28,9 @@ var sequelize = new Sequelize(url,
 // Importar la definicion de la tabla Quiz de quiz.js
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
+// Importar la definciin de la tabla Attachments de attachment.js
+var Attachment = sequelize.import(path.join(__dirname,'attachment'));
+
 //Importar la definicion de tabla Comments
 var Comment = sequelize.import(path.join(__dirname,'comment'));
 
@@ -42,6 +45,11 @@ Quiz.hasMany(Comment); //un quiz puede tener varios comentarios
 User.hasMany(Quiz, {foreignKey: 'AuthorId'});
 Quiz.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'});
 
+// Relacion 1-a-1 ente Quiz y Attachment
+Attachment.belongsTo(Quiz);
+Quiz.hasOne(Attachment);
+
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
 exports.Comment = Comment; //exportar definicion de tabla Comment
 exports.User = User; //exportar definicion de tabla Users
+exports.Attachment = Attachment; //exportar definicion de tabla Attachment
