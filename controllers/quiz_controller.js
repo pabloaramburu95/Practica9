@@ -9,7 +9,7 @@ var cloudinary_image_options = {crop:'limit', width: 200, height: 200, radius: 5
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId, {include:[models.Comment, models.Attachment]} )
+	models.Quiz.findById(quizId, { include: [{model:models.Comment, include: [{model:models.User, as:'Author'}]}]})
   		.then(function(quiz) {
       		if (quiz) {
         		req.quiz = quiz;
@@ -43,7 +43,7 @@ exports.index = function(req, res, next) {
 exports.show = function(req, res, next) {
 	if ((req.params.format==='html')||(!req.params.format)){
 	  var answer = req.query.answer || '';
-	  res.render('quizzes/show', {quiz: req.quiz,answer: answer});
+	  res.render('quizzes/show', {quiz: req.quiz,answer: answer, users:req.users});
 	}else if(req.params.format==='json'){
 	  res.send(JSON.stringify(req.quiz));
 	}else{ throw new Error("No es válido el formato");}

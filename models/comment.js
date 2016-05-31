@@ -6,6 +6,8 @@ module.exports = function(sequelize, DataTypes){
 		validate: {notEmpty:{msg:"Falta comentario"}}
 		},
 		accepted: { type: DataTypes.BOOLEAN,
+				defaultValue: false},
+		AuthorId: { type: DataTypes.INTEGER,
 				defaultValue: false}
 	});
 };
